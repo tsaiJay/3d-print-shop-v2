@@ -15,6 +15,18 @@
 
 | 本機原檔 | 圖庫 URL | 用在哪些片段 | 上傳日期 | 備註 |
 | --- | --- | --- | --- | --- |
-| _尚無_ | | | | |
+| `assets/images/hero_market.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/hero_market.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 首頁主視覺 |
+| `assets/images/promo_season.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_season.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 當季鮮採卡 |
+| `assets/images/promo_welcome.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_welcome.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 新客歡迎卡 |
+| `assets/images/veg_tomato.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_tomato.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 紅番茄 |
+| `assets/images/veg_carrot.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_carrot.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 橙蘿蔔 |
+| `assets/images/veg_cabbage.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_cabbage.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 高麗菜 |
+| `assets/images/veg_corn.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_corn.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 黃金玉米 |
+| `assets/images/veg_eggplant.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_eggplant.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 紫茄子 |
+| `assets/images/veg_pumpkin.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_pumpkin.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 奶油南瓜 |
+| `assets/images/veg_pepper.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_pepper.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 青椒 |
+| `assets/images/veg_broccoli.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_broccoli.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 青花椰 |
+| `assets/images/veg_cucumber.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_cucumber.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 小黃瓜 |
+| `assets/images/logo_field.png` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/logo_field.png` | 版面 > LOGO（桌面與手機） | 2026-09-24 | 2026-09-24 已設為頁首並置中 |
 
 上傳後把 `_尚無_` 那列換成實際資料，一張圖一列。

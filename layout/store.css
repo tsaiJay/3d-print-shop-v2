@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap");
+
+/* 田園鮮選：清新大地色全站皮。選擇器盡量避開結帳核心。 */
+
+body.responsive {
+  background: #f6f1e7 !important;
+  color: #2f3d32;
+  font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+}
+
+#field-ticker {
+  background: #6e8b74;
+  color: #fffdf8;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  padding: 8px 16px;
+}
+
+#header,
+#navbar-top-fixed,
+#navbar-top-fixed .navbar-inner {
+  background: #fffcf8 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#header {
+  border-bottom: 1px solid #e7d7c1 !important;
+}
+
+#header .logo {
+  text-align: center !important;
+  float: none !important;
+  display: block !important;
+}
+
+header img,
+#header img {
+  max-height: 72px;
+  width: auto;
+}
+
+#header .nav > li > a,
+#menu a,
+.navbar .nav > li > a {
+  color: #3d4a32 !important;
+  font-weight: 500;
+}
+
+#header .nav > li > a:hover,
+#menu a:hover {
+  color: #c4785a !important;
+  background: transparent !important;
+}
+
+body.home #body-outer-container {
+  width: 100% !important;
+  max-width: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  background: #f6f1e7;
+}
+
+body.home #body-outer-container > .container-inner {
+  padding: 0 !important;
+}
+
+body.home #latest-products {
+  display: none !important;
+}
+
+body.home #latest-products .box-heading,
+body.home #latest-products h4,
+body.home .box-heading {
+  color: #2f3d32 !important;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: center;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.grid-box .name a,
+.product-grid .name a {
+  color: #2f3d32 !important;
+}
+
+.grid-box .price,
+.product-price {
+  color: #c4785a !important;
+}
+
+a.button,
+.button,
+#button-cart,
+#button-quick-checkout {
+  background: #c4785a !important;
+  border-color: #c4785a !important;
+  color: #fffdf8 !important;
+  border-radius: 999px !important;
+}
+
+a.button:hover,
+.button:hover,
+#button-cart:hover {
+  background: #6e8b74 !important;
+  border-color: #6e8b74 !important;
+}
+
+#footer {
+  background: #2f3d32 !important;
+  color: #f6f1e7 !important;
+}
+
+#footer a,
+#footer h3,
+#footer .copyright {
+  color: #f6f1e7 !important;
+}
+
+#footer a:hover {
+  color: #e7d7c1 !important;
+}
+
+#mobile-navbar .navbar-inner {
+  background: #fffcf8 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+#mobile-navbar a,
+#mobile-navbar .fa,
+#mobile-navbar #menu-btn,
+#mobile-navbar #menu-btn span {
+  color: #3d4a32 !important;
+}
+
+@media (max-width: 768px) {
+  #field-ticker {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  header img,
+  #header img {
+    max-height: 52px;
+  }
+}
