@@ -1,0 +1,41 @@
+<style>
+.field-home { color: #2f3d32; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+.field-home img { max-width: 100%; height: auto; display: block; }
+.field-home a { text-decoration: none; }
+.field-join { display: flex; gap: 16px; max-width: 1170px; margin: 10px auto 28px; padding: 0 16px; }
+.field-card { flex: 1; position: relative; min-width: 0; overflow: hidden; border-radius: 16px; }
+.field-card > a { display: block; }
+.field-card img { width: 100%; height: auto; aspect-ratio: 1100 / 619; object-fit: cover; }
+.field-card div {
+  position: absolute; left: 24px; bottom: 22px; color: #2f3d32;
+  background: rgba(255, 252, 248, 0.9); padding: 14px 16px; border-radius: 12px;
+}
+.field-card div a { color: inherit; }
+.field-card h3 { margin: 0 0 4px; font-size: 22px; }
+.field-card p { margin: 0; font-size: 14px; }
+@media (max-width: 900px) {
+  .field-join { flex-direction: column; }
+}
+</style>
+<div class="field-home">
+  <div class="field-join">
+    <div class="field-card">
+      <a href="https://tsaijlab.qdm.tw/product/category&amp;path=3">
+        <img src="https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_season.jpg" alt="新品上市">
+      </a>
+      <div>
+        <h3><a href="https://tsaijlab.qdm.tw/product/category&amp;path=3">新品上市</a></h3>
+        <p>這一籃，剛從圖裡摘下來。</p>
+      </div>
+    </div>
+    <div class="field-card">
+      <a href="https://tsaijlab.qdm.tw/product/category&amp;path=4">
+        <img src="https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_welcome.jpg" alt="日常食材">
+      </a>
+      <div>
+        <h3><a href="https://tsaijlab.qdm.tw/product/category&amp;path=4">日常食材</a></h3>
+        <p>第一份蔬食，從認識它們開始。</p>
+      </div>
+    </div>
+  </div>
+</div>

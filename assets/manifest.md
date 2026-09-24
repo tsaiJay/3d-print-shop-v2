@@ -16,12 +16,14 @@
 | 本機原檔 | 圖庫 URL | 用在哪些片段 | 上傳日期 | 備註 |
 | --- | --- | --- | --- | --- |
 | `assets/images/hero_market.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/hero_market.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 首頁主視覺 |
-| `assets/images/promo_season.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_season.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 當季鮮採卡 |
-| `assets/images/promo_welcome.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_welcome.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 新客歡迎卡 |
+| `assets/images/promo_season.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_season.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 新品上市卡 |
+| `assets/images/promo_welcome.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/promo_welcome.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 日常食材卡 |
 | `assets/images/veg_tomato.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_tomato.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 紅番茄 |
 | `assets/images/veg_carrot.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_carrot.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 橙蘿蔔 |
 | `assets/images/veg_cabbage.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_cabbage.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 高麗菜 |
-| `assets/images/veg_corn.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_corn.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 黃金玉米 |
+| `assets/images/veg_corn.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_corn.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 黃金玉米（商品主圖） |
+| `assets/images/veg_corn_peek.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_corn_peek.jpg` | | 2026-09-24 | 黃金玉米圖集：苞葉裡探出頭 |
+| `assets/images/veg_corn_close.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_corn_close.jpg` | | 2026-09-24 | 黃金玉米圖集：臉部特寫 |
 | `assets/images/veg_eggplant.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_eggplant.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 紫茄子 |
 | `assets/images/veg_pumpkin.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_pumpkin.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 奶油南瓜 |
 | `assets/images/veg_pepper.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_pepper.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 青椒 |

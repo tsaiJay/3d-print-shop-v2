@@ -29,6 +29,7 @@
 | --- | --- | --- | --- |
 | 系統預設：關於我們 | `pages/about-us/` | 後台列表確認 | 未建立 |
 | 系統預設：服務條款 | `pages/terms/` | 後台列表確認 | 未建立 |
+| 橫幅示範（幻燈片／並排／輪播） | `pages/bannerdemo/` | https://tsaijlab.qdm.tw/pages/bannerdemo | 已同步 (2026-09-25) |
 
 開始設計某頁時，再建該 slug 資料夾，不要先放空的 `content.html`。
 
@@ -38,7 +39,10 @@
 | --- | --- | --- | --- |
 | 全站 CSS | `layout/store.css` | 版面 > 自訂 CSS 商店樣式（立即發佈） | 已同步 (2026-09-24) |
 | 全站 JS | `layout/store.js` | 版面 > 自訂 JS 全站程式碼（不要包 `<script>`） | 已同步 (2026-09-24) |
-| 首頁落地（田園鮮選） | `layout/html-boxes/home-landing/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂） | 已同步 (2026-09-24) |
+| 首頁・開場 | `layout/html-boxes/home-intro/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 1） | 已同步 (2026-09-24) |
+| 首頁・雙卡 | `layout/html-boxes/home-join/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 2） | 已同步 (2026-09-24) |
+| 首頁・拼貼 | `layout/html-boxes/home-mosaic/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 3） | 已同步 (2026-09-24) |
+| 首頁・收尾 | `layout/html-boxes/home-close/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 4） | 已同步 (2026-09-24) |
 | 頁尾延伸資訊 | `layout/footer.html` | 版面 > 商店頁尾 > 延伸資訊 > 原始碼 | 草稿 |
 
 單頁效果先放在該頁 `content.html`，不要一開始就寫進全站 CSS／JS。
