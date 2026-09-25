@@ -42,7 +42,7 @@
 | 全站 JS | `layout/store.js` | 版面 > 自訂 JS 全站程式碼（不要包 `<script>`） | 待更新（2026-09-25 加了購物車縮圖，尚未發佈） |
 | 首頁・開場 | `layout/html-boxes/home-intro/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 1） | 已同步 (2026-09-24) |
 | 首頁・雙卡 | `layout/html-boxes/home-join/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 2） | 已同步 (2026-09-24) |
-| 首頁・拼貼 | `layout/html-boxes/home-mosaic/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 3） | 已同步 (2026-09-24) |
+| 首頁・拼貼 | `layout/html-boxes/home-mosaic/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 3） | 已同步 (2026-09-25) |
 | 首頁・收尾 | `layout/html-boxes/home-close/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 4） | 已同步 (2026-09-24) |
 | 頁尾延伸資訊 | `layout/footer.html` | 版面 > 商店頁尾 > 延伸資訊 > 原始碼 | 草稿 |
 
