@@ -30,6 +30,7 @@
 | 系統預設：關於我們 | `pages/about-us/` | 後台列表確認 | 未建立 |
 | 系統預設：服務條款 | `pages/terms/` | 後台列表確認 | 未建立 |
 | 橫幅示範（幻燈片／並排／輪播） | `pages/bannerdemo/` | https://tsaijlab.qdm.tw/pages/bannerdemo | 已同步 (2026-09-25) |
+| 客製預覽（上傳 logo、壓 JPEG 放進購物車） | `pages/custom-preview/` | https://tsaijlab.qdm.tw/pages/custompreview | 已同步 (2026-09-25) |
 
 開始設計某頁時，再建該 slug 資料夾，不要先放空的 `content.html`。
 
@@ -37,8 +38,8 @@
 
 | 用途 | 本機 | 貼上位置 | 同步狀態 |
 | --- | --- | --- | --- |
-| 全站 CSS | `layout/store.css` | 版面 > 自訂 CSS 商店樣式（立即發佈） | 已同步 (2026-09-24) |
-| 全站 JS | `layout/store.js` | 版面 > 自訂 JS 全站程式碼（不要包 `<script>`） | 已同步 (2026-09-24) |
+| 全站 CSS | `layout/store.css` | 版面 > 自訂 CSS 商店樣式（立即發佈） | 待更新（2026-09-25 加了購物車縮圖，尚未發佈） |
+| 全站 JS | `layout/store.js` | 版面 > 自訂 JS 全站程式碼（不要包 `<script>`） | 待更新（2026-09-25 加了購物車縮圖，尚未發佈） |
 | 首頁・開場 | `layout/html-boxes/home-intro/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 1） | 已同步 (2026-09-24) |
 | 首頁・雙卡 | `layout/html-boxes/home-join/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 2） | 已同步 (2026-09-24) |
 | 首頁・拼貼 | `layout/html-boxes/home-mosaic/content.html` | 版面 > HTML 自訂語法區塊（首頁／置頂，排序 3） | 已同步 (2026-09-24) |
@@ -57,6 +58,7 @@
 | 高麗菜、青椒 | 當季鮮採 | 79、65 | 已同步 (2026-09-24) |
 | 黃金玉米、青花椰 | 新品上市 | 59、85 | 已同步 (2026-09-24) |
 | 紫茄子、奶油南瓜、小黃瓜 | 日常食材 | 75、99、49 | 已同步 (2026-09-24) |
+| 白瓷馬克杯（客製試用） | 無（單品，keyword `mugcustom`） | 1 | 已同步 (2026-09-25) |
 
 ## 之後才加（現在不要建）
 

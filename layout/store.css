@@ -137,6 +137,26 @@ a.button:hover,
   color: #3d4a32 !important;
 }
 
+.cp-order-thumb {
+  display: block;
+  width: 140px;
+  height: auto;
+  margin-top: 6px;
+  background: #fff;
+}
+
+#cp-order-note {
+  margin: 12px 0;
+  font-size: 15px;
+}
+
+.cp-mug-product #option-2,
+.cp-mug-product #option-3,
+.cp-mug-product #option-4,
+.cp-mug-product #button-cart {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
   #field-ticker {
     font-size: 13px;

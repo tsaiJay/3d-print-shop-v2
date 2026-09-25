@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>客製預覽試用</title>
+<style>
+  body { margin: 0; background: #efeae3; }
+</style>
+</head>
+<body>
+<!-- 貼進 QDM「頁面 > 自訂頁面 > 原始碼」時，只貼下面這段 style 到 script。
+     杯子和測試 logo 用站內 /image/data/ 相對路徑。寫成完整網址時，前台會改寫到 CDN，畫布就無法壓圖。 -->
+<style>
+.cp-app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
+  color: #1c1915;
+  font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.55;
+}
+.cp-app * { box-sizing: border-box; }
+.cp-kicker {
+  margin: 0 0 6px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #8a5a32;
+}
+.cp-app h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.cp-lead {
+  margin: 0 0 22px;
+  max-width: 40em;
+  color: #4d463f;
+}
+.cp-layout {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+}
+.cp-stage {
+  flex: 1.15;
+  min-width: 0;
+  background: #f7f4ef;
+  border-radius: 18px;
+  padding: 12px;
+}
+.cp-stage canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  touch-action: none;
+  cursor: grab;
+  background: #f3f0ea;
+}
+.cp-stage canvas.cp-dragging { cursor: grabbing; }
+.cp-hint {
+  margin: 10px 4px 0;
+  font-size: 13px;
+  color: #6d655d;
+}
+.cp-panel {
+  flex: 0.85;
+  min-width: 260px;
+  background: #fffdf9;
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+}
+.cp-product {
+  margin: 0 0 14px;
+  font-size: 15px;
+  color: #6d655d;
+}
+.cp-product strong { color: #1c1915; font-size: 18px; }
+.cp-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.cp-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  background:
+    linear-gradient(45deg, #ece7e0 25%, transparent 25%),
+    linear-gradient(-45deg, #ece7e0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ece7e0 75%),
+    linear-gradient(-45deg, transparent 75%, #ece7e0 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  background-color: #f7f4ef;
+  border-radius: 8px;
+}
+.cp-file-name { margin: 0; font-size: 14px; word-break: break-all; }
+.cp-actions, .cp-downloads { display: flex; flex-wrap: wrap; gap: 8px; }
+.cp-actions { margin-bottom: 14px; }
+.cp-app button, .cp-pick {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  background: #1b3a4b;
+  color: #fff;
+}
+.cp-app button:disabled { opacity: 0.45; cursor: not-allowed; }
+.cp-pick { display: inline-block; background: #efe6da; color: #1c1915; }
+.cp-app button.cp-primary { background: #e07a3d; color: #1c1915; font-weight: 700; }
+.cp-app button.cp-ghost { background: #fffdf9; color: #1b3a4b; box-shadow: inset 0 0 0 1.5px #1b3a4b; }
+.cp-field { margin: 0 0 12px; }
+.cp-field label { display: block; margin-bottom: 6px; font-size: 14px; }
+.cp-field input[type="range"] { width: 100%; accent-color: #e07a3d; }
+.cp-check { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; font-size: 14px; }
+.cp-status {
+  min-height: 1.4em;
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: #8a5a32;
+}
+.cp-note {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid #efe6da;
+  font-size: 14px;
+  color: #4d463f;
+}
+.cp-note ol { margin: 8px 0 0; padding-left: 1.2em; }
+@media (max-width: 760px) {
+  .cp-layout { flex-direction: column; }
+  .cp-panel { width: 100%; }
+  .cp-app h1 { font-size: 26px; }
+}
+</style>
+
+<div class="cp-app">
+  <p class="cp-kicker">試用</p>
+  <h1>把 logo 印到杯子上看看</h1>
+  <p class="cp-lead">上傳圖檔後按預覽。滿意就放進購物車，圖和位置會跟這杯一起走，不用另外傳檔。</p>
+
+  <div class="cp-layout">
+    <div class="cp-stage">
+      <canvas id="cp-canvas" width="1024" height="1024" aria-label="馬克杯預覽"></canvas>
+      <p class="cp-hint">預覽出現後，可在圖上拖曳移動 logo。</p>
+    </div>
+
+    <div class="cp-panel">
+      <p class="cp-product">這次試用品項<br><strong>白瓷馬克杯</strong></p>
+
+      <div class="cp-file">
+        <img id="cp-thumb" class="cp-thumb" alt="" hidden>
+        <p id="cp-file-name" class="cp-file-name">尚未選擇圖檔</p>
+      </div>
+
+      <div class="cp-actions">
+        <label class="cp-pick">
+          上傳圖檔
+          <input id="cp-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        </label>
+        <button type="button" id="cp-sample">用測試 logo</button>
+        <button type="button" class="cp-primary" id="cp-preview">預覽</button>
+        <button type="button" class="cp-primary" id="cp-order" disabled>就這個，放入購物車</button>
+      </div>
+
+      <div class="cp-field">
+        <label for="cp-scale">大小 <span id="cp-scale-label">90%</span></label>
+        <input id="cp-scale" type="range" min="40" max="140" value="90">
+      </div>
+
+      <label class="cp-check">
+        <input id="cp-guide" type="checkbox" checked>
+        顯示印刷區
+      </label>
+
+      <div class="cp-downloads">
+        <button type="button" class="cp-ghost" id="cp-reset">重設位置</button>
+        <button type="button" class="cp-ghost" id="cp-save-preview" disabled>下載預覽圖</button>
+        <button type="button" class="cp-ghost" id="cp-save-original" disabled>下載原圖</button>
+      </div>
+
+      <p id="cp-status" class="cp-status" role="status"></p>
+
+      <div class="cp-note">
+        <strong>這張是示意，不是印刷完稿。</strong>
+        <ol>
+          <li>建議用透明底 PNG。方圖白底會像一塊貼紙。</li>
+          <li>放入購物車時，預覽圖和客人的圖會壓成較小的 JPEG，連同位置寫進這一杯。</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var ON_STORE = location.hostname.indexOf("qdm.tw") !== -1;
+  var MUG_SRC = ON_STORE ? "/image/data/mug_blank.jpg" : "../../assets/images/mug_blank.png";
+  var SAMPLE_LOGO_SRC = ON_STORE ? "/image/data/logo_sample.png" : "../../assets/images/logo_sample.png";
+  var PRODUCT_ID = "10";
+  var OPTION_POSITION = "2";
+  var OPTION_PREVIEW = "3";
+  var OPTION_FILE = "4";
+  var MAX_DATA_URL = 45000;
+  var PRINT = { x: 0.30, y: 0.36, w: 0.22, h: 0.32 };
+  var MAX_BYTES = 2 * 1024 * 1024;
+
+  var canvas = document.getElementById("cp-canvas");
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext("2d");
+  var thumb = document.getElementById("cp-thumb");
+  var fileNameEl = document.getElementById("cp-file-name");
+  var statusEl = document.getElementById("cp-status");
+  var scaleInput = document.getElementById("cp-scale");
+  var scaleLabel = document.getElementById("cp-scale-label");
+  var guideInput = document.getElementById("cp-guide");
+  var savePreviewBtn = document.getElementById("cp-save-preview");
+  var saveOriginalBtn = document.getElementById("cp-save-original");
+  var orderBtn = document.getElementById("cp-order");
+
+  var state = {
+    mug: null,
+    logo: null,
+    originalUrl: "",
+    fileName: "",
+    ownsUrl: false,
+    previewed: false,
+    scale: 0.9,
+    offsetX: 0,
+    offsetY: 0,
+    drag: null
+  };
+
+  function setStatus(text) {
+    statusEl.textContent = text;
+  }
+
+  function printBox() {
+    return {
+      x: PRINT.x * canvas.width,
+      y: PRINT.y * canvas.height,
+      w: PRINT.w * canvas.width,
+      h: PRINT.h * canvas.height
+    };
+  }
+
+  function clampOffset() {
+    var box = printBox();
+    var maxX = box.w * 0.45;
+    var maxY = box.h * 0.45;
+    state.offsetX = Math.max(-maxX, Math.min(maxX, state.offsetX));
+    state.offsetY = Math.max(-maxY, Math.min(maxY, state.offsetY));
+  }
+
+  function render(opts) {
+    if (!state.mug) return;
+    var showLogo = !opts || opts.logo !== false;
+    var showGuide = opts && typeof opts.guide === "boolean" ? opts.guide : guideInput.checked;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(state.mug, 0, 0, canvas.width, canvas.height);
+    if (showLogo && state.previewed && state.logo) {
+      var box = printBox();
+      var fit = Math.min(box.w / state.logo.width, box.h / state.logo.height) * state.scale;
+      var dw = state.logo.width * fit;
+      var dh = state.logo.height * fit;
+      var dx = box.x + (box.w - dw) / 2 + state.offsetX;
+      var dy = box.y + (box.h - dh) / 2 + state.offsetY;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(box.x, box.y, box.w, box.h);
+      ctx.clip();
+      ctx.globalCompositeOperation = "multiply";
+      ctx.drawImage(state.logo, dx, dy, dw, dh);
+      ctx.restore();
+    }
+    if (showGuide) {
+      var guide = printBox();
+      ctx.save();
+      ctx.strokeStyle = "#e07a3d";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([10, 8]);
+      ctx.strokeRect(guide.x, guide.y, guide.w, guide.h);
+      ctx.restore();
+    }
+  }
+
+  function loadLogo(url, name, ownsUrl) {
+    var img = new Image();
+    img.onload = function () {
+      if (state.ownsUrl && state.originalUrl.indexOf("blob:") === 0) {
+        URL.revokeObjectURL(state.originalUrl);
+      }
+      state.logo = img;
+      state.originalUrl = url;
+      state.fileName = name;
+      state.ownsUrl = ownsUrl;
+      state.previewed = false;
+      state.offsetX = 0;
+      state.offsetY = 0;
+      thumb.hidden = false;
+      thumb.src = url;
+      fileNameEl.textContent = name;
+      savePreviewBtn.disabled = true;
+      saveOriginalBtn.disabled = false;
+      if (orderBtn) orderBtn.disabled = true;
+      setStatus("已載入「" + name + "」。按預覽看在杯子上的效果。");
+      render({ logo: false });
+    };
+    img.onerror = function () {
+      setStatus("這張圖讀取失敗，請換一張。");
+    };
+    img.src = url;
+  }
+
+  function canvasPoint(ev) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: (ev.clientX - rect.left) * (canvas.width / rect.width),
+      y: (ev.clientY - rect.top) * (canvas.height / rect.height)
+    };
+  }
+
+  document.getElementById("cp-file").addEventListener("change", function (ev) {
+    var file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    var okType = /^image\/(png|jpeg|webp)$/.test(file.type);
+    if (!okType) {
+      setStatus("請上傳 PNG、JPG 或 WEBP。");
+      ev.target.value = "";
+      return;
+    }
+    if (file.size > MAX_BYTES) {
+      setStatus("檔案請小於 2MB。");
+      ev.target.value = "";
+      return;
+    }
+    loadLogo(URL.createObjectURL(file), file.name, true);
+  });
+
+  document.getElementById("cp-sample").addEventListener("click", function () {
+    loadLogo(SAMPLE_LOGO_SRC, "logo_sample.png", false);
+  });
+
+  document.getElementById("cp-preview").addEventListener("click", function () {
+    if (!state.logo) {
+      setStatus("請先上傳圖檔，或按「用測試 logo」。");
+      return;
+    }
+    state.previewed = true;
+    savePreviewBtn.disabled = false;
+    if (orderBtn) orderBtn.disabled = false;
+    render();
+    setStatus("這是示意。可拖曳移動，或拉大小。滿意就放入購物車。");
+  });
+
+  scaleInput.addEventListener("input", function () {
+    state.scale = Number(scaleInput.value) / 100;
+    scaleLabel.textContent = scaleInput.value + "%";
+    if (state.previewed) render();
+  });
+
+  guideInput.addEventListener("change", function () {
+    render();
+  });
+
+  document.getElementById("cp-reset").addEventListener("click", function () {
+    state.offsetX = 0;
+    state.offsetY = 0;
+    state.scale = 0.9;
+    scaleInput.value = "90";
+    scaleLabel.textContent = "90%";
+    if (state.previewed) render();
+    setStatus("已回到印刷區正中、大小 90%。");
+  });
+
+  saveOriginalBtn.addEventListener("click", function () {
+    if (!state.originalUrl) return;
+    var a = document.createElement("a");
+    a.href = state.originalUrl;
+    a.download = state.fileName || "logo.png";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+
+  savePreviewBtn.addEventListener("click", function () {
+    if (!state.previewed) return;
+    render({ guide: false, logo: true });
+    canvas.toBlob(function (blob) {
+      render();
+      if (!blob) {
+        setStatus("這台瀏覽器無法匯出預覽圖。");
+        return;
+      }
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "mug_preview.png";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+    }, "image/png");
+  });
+
+  canvas.addEventListener("pointerdown", function (ev) {
+    if (!state.previewed || !state.logo) return;
+    var p = canvasPoint(ev);
+    state.drag = { x: p.x, y: p.y, ox: state.offsetX, oy: state.offsetY };
+    canvas.classList.add("cp-dragging");
+    canvas.setPointerCapture(ev.pointerId);
+  });
+
+  canvas.addEventListener("pointermove", function (ev) {
+    if (!state.drag) return;
+    var p = canvasPoint(ev);
+    state.offsetX = state.drag.ox + (p.x - state.drag.x);
+    state.offsetY = state.drag.oy + (p.y - state.drag.y);
+    clampOffset();
+    render();
+  });
+
+  function endDrag() {
+    if (!state.drag) return;
+    state.drag = null;
+    canvas.classList.remove("cp-dragging");
+  }
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+
+  function jpegDataUrl(img, maxEdge) {
+    var edge = maxEdge;
+    var quality = 0.72;
+    var url = "";
+    for (var n = 0; n < 8; n++) {
+      var scale = Math.min(1, edge / Math.max(img.width, img.height));
+      var w = Math.max(1, Math.round(img.width * scale));
+      var h = Math.max(1, Math.round(img.height * scale));
+      var shot = document.createElement("canvas");
+      shot.width = w;
+      shot.height = h;
+      var pen = shot.getContext("2d");
+      pen.fillStyle = "#ffffff";
+      pen.fillRect(0, 0, w, h);
+      pen.drawImage(img, 0, 0, w, h);
+      try {
+        url = shot.toDataURL("image/jpeg", quality);
+      } catch (err) {
+        return "";
+      }
+      if (url.length <= MAX_DATA_URL) return url;
+      quality = Math.max(0.35, quality - 0.1);
+      edge = Math.round(edge * 0.82);
+    }
+    return url;
+  }
+
+  function positionText() {
+    return "大小" + Math.round(state.scale * 100) + " 左右" + Math.round(state.offsetX) + " 上下" + Math.round(state.offsetY);
+  }
+
+  if (orderBtn) {
+    orderBtn.addEventListener("click", function () {
+      if (!state.previewed || !state.logo) {
+        setStatus("請先按預覽。");
+        return;
+      }
+      if (!ON_STORE) {
+        setStatus("本機預覽不會送出。請改開商店上的客製預覽頁。");
+        return;
+      }
+      orderBtn.disabled = true;
+      setStatus("正在把圖放進購物車…");
+      render({ guide: false, logo: true });
+      var previewUrl = jpegDataUrl(canvas, 480);
+      render();
+      var fileUrl = jpegDataUrl(state.logo, 640);
+      if (!previewUrl || !fileUrl || previewUrl.length > MAX_DATA_URL || fileUrl.length > MAX_DATA_URL) {
+        orderBtn.disabled = false;
+        setStatus("圖還是太大，請換一張比較小的圖。");
+        return;
+      }
+      var body = new URLSearchParams();
+      body.set("product_id", PRODUCT_ID);
+      body.set("quantity", "1");
+      body.set("option[" + OPTION_POSITION + "]", positionText());
+      body.set("option[" + OPTION_PREVIEW + "]", previewUrl);
+      body.set("option[" + OPTION_FILE + "]", fileUrl);
+      fetch("/index.php?route=checkout/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+        body: body.toString(),
+        credentials: "same-origin"
+      }).then(function (res) {
+        return res.json();
+      }).then(function (json) {
+        if (!json || json.error) {
+          orderBtn.disabled = false;
+          setStatus("沒放進購物車，請再按一次。");
+          return;
+        }
+        location.href = "/cart";
+      }).catch(function () {
+        orderBtn.disabled = false;
+        setStatus("沒放進購物車，請再按一次。");
+      });
+    });
+  }
+
+  var mug = new Image();
+  mug.onload = function () {
+    canvas.width = mug.naturalWidth;
+    canvas.height = mug.naturalHeight;
+    state.mug = mug;
+    render({ logo: false });
+  };
+  mug.onerror = function () {
+    setStatus("杯子底圖載入失敗。");
+  };
+  mug.src = MUG_SRC;
+})();
+</script>
+</body>
+</html>

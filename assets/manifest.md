@@ -30,5 +30,7 @@
 | `assets/images/veg_broccoli.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_broccoli.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 青花椰 |
 | `assets/images/veg_cucumber.jpg` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/veg_cucumber.jpg` | `layout/html-boxes/home-landing/content.html` | 2026-09-24 | 小黃瓜 |
 | `assets/images/logo_field.png` | `https://image-cdn-flare.qdm.cloud/q6f01a07a7c0c5/image/data/logo_field.png` | 版面 > LOGO（桌面與手機） | 2026-09-24 | 2026-09-24 已設為頁首並置中 |
+| `assets/images/mug_blank.png` | `https://image-cdn.qdm.cloud/site/q6f01a07a7c0c5/image/data/mug_blank.jpg` | `pages/custom-preview/content.html` | 2026-09-25 | 白瓷馬克杯底圖。本機檔內容是 JPEG，圖庫檔名為 mug_blank.jpg |
+| `assets/images/logo_sample.png` | `https://image-cdn.qdm.cloud/site/q6f01a07a7c0c5/image/data/logo_sample.png` | `pages/custom-preview/content.html` | 2026-09-25 | 透明底測試 logo |
 
 上傳後把 `_尚無_` 那列換成實際資料，一張圖一列。
