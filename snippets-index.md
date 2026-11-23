@@ -30,7 +30,7 @@
 | 系統預設：關於我們 | `pages/about-us/` | 後台列表確認 | 未建立 |
 | 系統預設：服務條款 | `pages/terms/` | 後台列表確認 | 未建立 |
 | 橫幅示範（幻燈片／並排／輪播） | `pages/bannerdemo/` | https://tsaijlab.qdm.tw/pages/bannerdemo | 已同步 (2026-09-25) |
-| 客製預覽（上傳 logo、壓 JPEG 放進購物車） | `pages/custom-preview/` | https://tsaijlab.qdm.tw/pages/custompreview | 已同步 (2026-09-25) |
+| 客製預覽（Gmail 寄出原圖與預覽 PNG） | `pages/custom-preview/` | https://tsaijlab.qdm.tw/pages/custompreview | 已同步 (2026-10-24) |
 
 開始設計某頁時，再建該 slug 資料夾，不要先放空的 `content.html`。
 

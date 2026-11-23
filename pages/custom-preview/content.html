@@ -144,7 +144,7 @@
 <div class="cp-app">
   <p class="cp-kicker">試用</p>
   <h1>把 logo 印到杯子上看看</h1>
-  <p class="cp-lead">上傳圖檔後按預覽。滿意就放進購物車，圖和位置會跟這杯一起走，不用另外傳檔。</p>
+  <p class="cp-lead">上傳圖檔，或按「用測試 logo」，就會直接出現在杯子上。滿意後，圖和位置會寄到店裡，購物車這一杯只留下同一組編號，用來對信。</p>
 
   <div class="cp-layout">
     <div class="cp-stage">
@@ -166,8 +166,7 @@
           <input id="cp-file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
         </label>
         <button type="button" id="cp-sample">用測試 logo</button>
-        <button type="button" class="cp-primary" id="cp-preview">預覽</button>
-        <button type="button" class="cp-primary" id="cp-order" disabled>就這個，放入購物車</button>
+        <button type="button" class="cp-primary" id="cp-order" disabled>就這個，寄出並下單</button>
       </div>
 
       <div class="cp-field">
@@ -191,8 +190,8 @@
       <div class="cp-note">
         <strong>這張是示意，不是印刷完稿。</strong>
         <ol>
-          <li>建議用透明底 PNG。方圖白底會像一塊貼紙。</li>
-          <li>放入購物車時，預覽圖和客人的圖會壓成較小的 JPEG，連同位置寫進這一杯。</li>
+          <li>建議用透明底 PNG。方圖白底會像一塊貼紙。寄出的是原始圖檔。</li>
+          <li>按下單後，預覽圖和 logo 寄到店家信箱。購物車只寫同一組編號，例如 CP-7K3Q。</li>
         </ol>
       </div>
     </div>
@@ -208,7 +207,10 @@
   var OPTION_POSITION = "2";
   var OPTION_PREVIEW = "3";
   var OPTION_FILE = "4";
-  var MAX_DATA_URL = 45000;
+  // 收件信箱寫在 Apps Script，不從這頁傳。網址或密鑰留空時不會送出。
+  // 實際值在本機 account/env，貼上後台前再填入；repo 裡保持空字串。
+  var GAS_URL = "";
+  var GAS_SECRET = "";
   var PRINT = { x: 0.30, y: 0.36, w: 0.22, h: 0.32 };
   var MAX_BYTES = 2 * 1024 * 1024;
 
@@ -230,8 +232,11 @@
     logo: null,
     originalUrl: "",
     fileName: "",
+    file: null,
     ownsUrl: false,
     previewed: false,
+    mailRef: "",
+    mailSent: false,
     scale: 0.9,
     offsetX: 0,
     offsetY: 0,
@@ -291,7 +296,7 @@
     }
   }
 
-  function loadLogo(url, name, ownsUrl) {
+  function loadLogo(url, name, ownsUrl, file) {
     var img = new Image();
     img.onload = function () {
       if (state.ownsUrl && state.originalUrl.indexOf("blob:") === 0) {
@@ -300,18 +305,21 @@
       state.logo = img;
       state.originalUrl = url;
       state.fileName = name;
+      state.file = file || null;
       state.ownsUrl = ownsUrl;
-      state.previewed = false;
+      state.previewed = true;
+      state.mailRef = "";
+      state.mailSent = false;
       state.offsetX = 0;
       state.offsetY = 0;
       thumb.hidden = false;
       thumb.src = url;
       fileNameEl.textContent = name;
-      savePreviewBtn.disabled = true;
+      savePreviewBtn.disabled = false;
       saveOriginalBtn.disabled = false;
-      if (orderBtn) orderBtn.disabled = true;
-      setStatus("已載入「" + name + "」。按預覽看在杯子上的效果。");
-      render({ logo: false });
+      if (orderBtn) orderBtn.disabled = false;
+      setStatus("這是示意。可拖曳移動，或拉大小。滿意就寄出並下單。");
+      render();
     };
     img.onerror = function () {
       setStatus("這張圖讀取失敗，請換一張。");
@@ -341,23 +349,11 @@
       ev.target.value = "";
       return;
     }
-    loadLogo(URL.createObjectURL(file), file.name, true);
+    loadLogo(URL.createObjectURL(file), file.name, true, file);
   });
 
   document.getElementById("cp-sample").addEventListener("click", function () {
     loadLogo(SAMPLE_LOGO_SRC, "logo_sample.png", false);
-  });
-
-  document.getElementById("cp-preview").addEventListener("click", function () {
-    if (!state.logo) {
-      setStatus("請先上傳圖檔，或按「用測試 logo」。");
-      return;
-    }
-    state.previewed = true;
-    savePreviewBtn.disabled = false;
-    if (orderBtn) orderBtn.disabled = false;
-    render();
-    setStatus("這是示意。可拖曳移動，或拉大小。滿意就放入購物車。");
   });
 
   scaleInput.addEventListener("input", function () {
@@ -435,31 +431,87 @@
   canvas.addEventListener("pointerup", endDrag);
   canvas.addEventListener("pointercancel", endDrag);
 
-  function jpegDataUrl(img, maxEdge) {
-    var edge = maxEdge;
-    var quality = 0.72;
-    var url = "";
-    for (var n = 0; n < 8; n++) {
-      var scale = Math.min(1, edge / Math.max(img.width, img.height));
-      var w = Math.max(1, Math.round(img.width * scale));
-      var h = Math.max(1, Math.round(img.height * scale));
-      var shot = document.createElement("canvas");
-      shot.width = w;
-      shot.height = h;
-      var pen = shot.getContext("2d");
-      pen.fillStyle = "#ffffff";
-      pen.fillRect(0, 0, w, h);
-      pen.drawImage(img, 0, 0, w, h);
-      try {
-        url = shot.toDataURL("image/jpeg", quality);
-      } catch (err) {
-        return "";
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var dataUrl = String(reader.result || "");
+        var comma = dataUrl.indexOf(",");
+        if (comma < 0) {
+          reject(new Error("圖檔讀取失敗，尚未寄出。"));
+          return;
+        }
+        resolve(dataUrl.slice(comma + 1));
+      };
+      reader.onerror = function () {
+        reject(new Error("圖檔讀取失敗，尚未寄出。"));
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  function logoPayload() {
+    var source = state.file
+      ? Promise.resolve(state.file)
+      : fetch("/image/data/logo_sample.png", { credentials: "same-origin" }).then(function (res) {
+          if (!res.ok) throw new Error("測試 logo 讀取失敗，尚未寄出。");
+          return res.blob();
+        });
+    return source.then(function (blob) {
+      var mime = (state.file && state.file.type) || blob.type || "image/png";
+      if (!/^image\/(png|jpeg|webp)$/.test(mime)) {
+        throw new Error("圖檔格式無法寄出，尚未寄出。");
       }
-      if (url.length <= MAX_DATA_URL) return url;
-      quality = Math.max(0.35, quality - 0.1);
-      edge = Math.round(edge * 0.82);
+      return blobToBase64(blob).then(function (base64) {
+        return { base64: base64, mime: mime };
+      });
+    });
+  }
+
+  function previewPayload() {
+    return new Promise(function (resolve, reject) {
+      render({ guide: false, logo: true });
+      canvas.toBlob(function (blob) {
+        render();
+        if (!blob) {
+          reject(new Error("預覽圖匯出失敗，尚未寄出。"));
+          return;
+        }
+        blobToBase64(blob).then(function (base64) {
+          resolve({ base64: base64, mime: "image/png" });
+        }, reject);
+      }, "image/png");
+    });
+  }
+
+  function makeRef() {
+    var alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    var code = "";
+    for (var i = 0; i < 4; i++) {
+      code += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
     }
-    return url;
+    return "CP-" + code;
+  }
+
+  function sendOrderMail(params) {
+    return fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(params)
+    }).then(function (res) {
+      return res.text();
+    }).then(function (text) {
+      var data = null;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        data = null;
+      }
+      if (!data || data.ok !== true) {
+        var reason = data && data.error ? "（" + data.error + "）" : "";
+        throw new Error("寄信失敗，尚未寄出。" + reason);
+      }
+    });
   }
 
   function positionText() {
@@ -469,47 +521,72 @@
   if (orderBtn) {
     orderBtn.addEventListener("click", function () {
       if (!state.previewed || !state.logo) {
-        setStatus("請先按預覽。");
+        setStatus("請先上傳圖檔，或按「用測試 logo」。");
         return;
       }
       if (!ON_STORE) {
         setStatus("本機預覽不會送出。請改開商店上的客製預覽頁。");
         return;
       }
-      orderBtn.disabled = true;
-      setStatus("正在把圖放進購物車…");
-      render({ guide: false, logo: true });
-      var previewUrl = jpegDataUrl(canvas, 480);
-      render();
-      var fileUrl = jpegDataUrl(state.logo, 640);
-      if (!previewUrl || !fileUrl || previewUrl.length > MAX_DATA_URL || fileUrl.length > MAX_DATA_URL) {
-        orderBtn.disabled = false;
-        setStatus("圖還是太大，請換一張比較小的圖。");
+      if (!GAS_URL || !GAS_SECRET) {
+        setStatus("要先部署 Apps Script 並把網址和密鑰填進這頁。");
         return;
       }
-      var body = new URLSearchParams();
-      body.set("product_id", PRODUCT_ID);
-      body.set("quantity", "1");
-      body.set("option[" + OPTION_POSITION + "]", positionText());
-      body.set("option[" + OPTION_PREVIEW + "]", previewUrl);
-      body.set("option[" + OPTION_FILE + "]", fileUrl);
-      fetch("/index.php?route=checkout/cart/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-        body: body.toString(),
-        credentials: "same-origin"
+      orderBtn.disabled = true;
+      var ref = state.mailRef;
+      var pending = Promise.resolve();
+      if (!state.mailSent) {
+        ref = makeRef();
+        setStatus("正在寄出圖檔…");
+        pending = Promise.all([logoPayload(), previewPayload()]).then(function (parts) {
+          return sendOrderMail({
+            secret: GAS_SECRET,
+            ref_code: ref,
+            position: positionText(),
+            file_name: state.fileName || "logo",
+            product_name: "白瓷馬克杯",
+            logo_base64: parts[0].base64,
+            logo_mime: parts[0].mime,
+            preview_base64: parts[1].base64,
+            preview_mime: parts[1].mime
+          });
+        }).then(function () {
+          state.mailRef = ref;
+          state.mailSent = true;
+        });
+      }
+      pending.then(function () {
+        setStatus("圖已寄出（" + ref + "）。正在放入購物車…");
+        var body = new URLSearchParams();
+        body.set("product_id", PRODUCT_ID);
+        body.set("quantity", "1");
+        body.set("option[" + OPTION_POSITION + "]", ref + " " + positionText());
+        body.set("option[" + OPTION_PREVIEW + "]", "見郵件 " + ref);
+        body.set("option[" + OPTION_FILE + "]", "見郵件 " + ref);
+        return fetch("/index.php?route=checkout/cart/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+          body: body.toString(),
+          credentials: "same-origin"
+        });
       }).then(function (res) {
+        if (!res) return null;
         return res.json();
       }).then(function (json) {
-        if (!json || json.error) {
+        if (!json) return;
+        if (json.error) {
           orderBtn.disabled = false;
-          setStatus("沒放進購物車，請再按一次。");
+          setStatus("信已寄出（" + ref + "），但沒放進購物車。請再按一次，不會重寄。");
           return;
         }
         location.href = "/cart";
-      }).catch(function () {
+      }).catch(function (err) {
         orderBtn.disabled = false;
-        setStatus("沒放進購物車，請再按一次。");
+        if (state.mailSent) {
+          setStatus("信已寄出（" + state.mailRef + "），但沒放進購物車。請再按一次，不會重寄。");
+          return;
+        }
+        setStatus(err && err.message ? err.message : "寄信失敗，尚未寄出。");
       });
     });
   }
@@ -519,7 +596,7 @@
     canvas.width = mug.naturalWidth;
     canvas.height = mug.naturalHeight;
     state.mug = mug;
-    render({ logo: false });
+    render();
   };
   mug.onerror = function () {
     setStatus("杯子底圖載入失敗。");
