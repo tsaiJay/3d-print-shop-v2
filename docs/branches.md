@@ -9,7 +9,6 @@
 | `main` | 中性基底：QDM 通用規則、範本、文件 | 無 | 只放通用內容 |
 | `qdm-tsai` | 測試場（playground）：新做法先在這裡試、做紀錄 | tsaijlab.qdm.tw（測試店） | 最高，可直接改線上 |
 | `qdm-sumi` | 與客戶合作的正式網站 | sumibostudio.qdm.tw | 低，動線上前先確認 |
-| `archive/first-demo` | 封存的第一版示範，只在本機 | tsaijlab.qdm.tw | 不再開發 |
 
 各分支的入口、角色、權限與規則，以該分支的 `BRANCH.md` 為準。
 
