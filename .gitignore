@@ -1,2 +1,9 @@
+# 帳號、密碼、密鑰只留本機；account/ 只追蹤 .gitkeep
+account/*
+!account/.gitkeep
+
+# 暫存素材（客戶原始檔、壓縮包）
+_temp/
+
 # 不納入版控的二進位素材
 *.pdf
